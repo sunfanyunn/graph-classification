@@ -1,0 +1,11 @@
+log
+__pycache__
+*.pyc
+*.walk
+preprocessed_dataset
+TEST
+checkpoint
+tmp
+*.nexf
+results
+
