@@ -1,4 +1,5 @@
 from glob import glob
+import grakel
 from grakel import Graph
 from grakel import GraphKernel
 from grakel import datasets
@@ -21,22 +22,31 @@ def get_data(graphs):
         
         D = []
         D.append({ (e[0]+1, e[1]+1) for e in G.edges()})
-
+        
         node_labels = {}
         for u in G.nodes():
             try:
-                n = op_map[G.node[u]['label']]
-            except:
-                n = op_map[G.node[u]['label']] = len(op_map)
+                try:
+                    n = op_map[G.node[u]['label']]
+                except:
+                    n = op_map[G.node[u]['label']] = len(op_map)
 
-            node_labels[int(u)+1] = n
+                node_labels[int(u)+1] = [n]
+            except:
+                node_labels[int(u)+1] = [0]
 
         D.append(node_labels)
         
         edge_labels = { (e[0]+1, e[1]+1): 1 for e in G.edges()}
         D.append(edge_labels)
 
+        # print(node_labels)
         D = Graph(D[0], node_labels=node_labels, edge_labels=None, graph_format='auto')
+        # for x in D:
+            # print(x)
+            # input()
+        # print(len(D))
+        # input()
         data.append(D)
 
 
@@ -51,7 +61,6 @@ if __name__ == '__main__':
     method = sys.argv[2]
     unique, counts = np.unique(y, return_counts=True)
     print(unique, counts)
-    # input()
     G = get_data(G)
     
     if method == 'wl':
@@ -203,6 +212,51 @@ if __name__ == '__main__':
                 y_test = [y[idx] for idx in test_index]
         
                 gk = GraphKernel(kernel=[{"name": "random_walk"}], normalize=True)
+                
+                # Calculate the kernel matrix.
+                K_train = gk.fit_transform(G_train)
+                K_test = gk.transform(G_test)
+                
+                # Initialise an SVM and fit.
+                # clf = svm.SVC(kernel='precomputed', C=1)
+                params = {'C':[0.001, 0.01,0.1,1,10,100,1000]}
+                clf = GridSearchCV(svm.SVC(kernel='precomputed'), params, cv=10, scoring='accuracy', verbose=0)
+                clf.fit(K_train, y_train)
+                
+                # Predict and test.
+                y_pred = clf.predict(K_test)
+                
+                # Calculate accuracy of classification.
+                acc = accuracy_score(y_test, y_pred)
+                accs.append(acc)
+                
+                end = time()
+                # print("Accuracy:", str(round(acc*100, 2)), "% | Took:",
+                      # str(round(end - start, 2)), "s")
+        
+            print(name, np.mean(accs), np.std(accs))
+            ultimate_accs.append(np.mean(accs))
+        print(np.mean(ultimate_accs), np.std(ultimate_accs))
+
+    if method == 'mlg':
+        ultimate_accs = []
+        for _ in range(5):
+            print("Multi Scale Laplacian")
+            kf = StratifiedKFold(n_splits=10, shuffle=True)
+            accs = []
+            for train_index, test_index in kf.split(G, y):
+        
+                start = time()
+        
+                G_train = [G[idx] for idx in train_index]
+                y_train = [y[idx] for idx in train_index]
+                G_test = [G[idx] for idx in test_index]
+                y_test = [y[idx] for idx in test_index]
+        
+                # gk = GraphKernel(kernel=[{"name": "multiscale_laplacian"}], normalize=True)
+                gk = grakel.MultiscaleLaplacianFast()
+                for x in G_train:
+                    assert type(x) == Graph
                 
                 # Calculate the kernel matrix.
                 K_train = gk.fit_transform(G_train)

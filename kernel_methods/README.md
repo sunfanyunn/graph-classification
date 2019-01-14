@@ -1,3 +1,3 @@
-# Graph Kernels (WL, SP, GK)
+# Graph Kernels
 
 please install Grakel
