@@ -1,0 +1,16 @@
+include $(ROOTDIR)/Makefile.options
+
+BASEDIR= $(ROOTDIR)
+INCLUDEDIR= $(ROOTDIR)/include
+UTILITYDIR= $(ROOTDIR)/utility
+FILETYPESDIR= $(ROOTDIR)/utility/filetypes
+MATRIXDIR= $(ROOTDIR)/matrices
+
+ifndef CFLAGS
+  CFLAGS=
+endif
+CFLAGS+= -std=c++11
+
+ifdef EIGENDIR
+  MACROS+= -D_withEigen
+endif

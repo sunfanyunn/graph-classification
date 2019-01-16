@@ -1,0 +1,17 @@
+############################################
+##        Options for pMMF build          ##	
+############################################
+
+## Set the C++ compiler 
+CC= g++
+
+## Path to MATLAB installation 
+#MATLABDIR= /Applications/MATLAB_R2015b.app/
+MATLABDIR= /usr/local/bin/matlab
+
+############################################
+##   Paths for linear algebra packages    ##
+############################################
+
+## path to Eigen
+EIGENDIR= /usr/local/include/eigen3/
