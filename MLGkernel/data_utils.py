@@ -29,7 +29,7 @@ def read_graphfile(datadir, dataname, max_nodes=None):
         with open(filename_nodes) as f:
             for line in f:
                 line=line.strip("\n")
-                node_labels+=[int(line) - 1]
+                node_labels+=[int(line)]
         num_unique_node_labels = max(node_labels) + 1
     except IOError:
         print('No node labels')
@@ -110,7 +110,9 @@ def read_graphfile(datadir, dataname, max_nodes=None):
         graphs.append(nx.relabel_nodes(G, mapping))
 
 
-    # np.random.shuffle(graphs)
+    np.random.shuffle(graphs)
+    #idx = np.random.RandomState(seed=2).permutation(len(graphs))
+    #graphs = [graphs[i] for i in idx]
 
     return graphs
 
