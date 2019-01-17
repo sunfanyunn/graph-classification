@@ -73,5 +73,5 @@ if __name__ == '__main__':
     # preprocess('REDDIT-BINARY')
     # preprocess('COLLAB')
     # preprocess('REDDIT-MULTI-5K')
-    preprocess('IMDB-BINARY')
+    # preprocess('IMDB-BINARY')
     # preprocess('IMDB-MULTI')

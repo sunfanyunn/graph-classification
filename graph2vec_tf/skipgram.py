@@ -101,7 +101,7 @@ class skipgram(object):
                 corpus.epoch_flag = False
                 epoch_time = time() - t0
 
-                if i%100 == 0:
+                if i == 500 or i == 900 or i == 1000:
                     print('epochs', i, 'loss', loss/step)
                     embeddings = self.normalized_embeddings.eval()
                     results.append(str(perform_classification(self.corpus_dir, self.extn, embeddings, self.class_labels_fname)))
@@ -111,6 +111,6 @@ class skipgram(object):
             final_embeddings = self.normalized_embeddings.eval()
 
             with open('log', 'a+') as f:
-                f.write(self.corpus_dir + ',' + ','.join(results) + '\n')
+                f.write(self.corpus_dir + ',' + str(self.learning_rate) + ',' + ','.join(results) + '\n')
             print('Done')
         return final_embeddings

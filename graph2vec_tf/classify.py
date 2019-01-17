@@ -36,19 +36,10 @@ def linear_svm_classify (X_train, X_test, Y_train, Y_test):
     :return: None
     '''
     params = {'C':[0.001, 0.01,0.1,1,10,100,1000]}
-    classifier = GridSearchCV(SVC(), params, cv=10, scoring='accuracy',verbose=0)
-    # classifier = LinearSVC(C=.1)
-    # classifier = SVC(C=10)
+    classifier = GridSearchCV(LinearSVC(), params, cv=5, scoring='accuracy',verbose=0)
     classifier.fit(X_train,Y_train)
-    # logging.info('best classifier model\'s hyperparamters', classifier.best_params_)
-
     Y_pred = classifier.predict(X_test)
-    # print(Y_test, Y_pred)
-
     acc = accuracy_score(Y_test, Y_pred)
-    # logging.info('Linear SVM accuracy: {}'.format(acc))
-
-    # logging.info(classification_report(Y_test, Y_pred))
     return acc
 
 
@@ -78,12 +69,8 @@ def perform_classification (corpus_dir, extn, embeddings, class_labels_fname):
     # X = np.array([graph_embedding_dict[fname] for fname in wlk_files])
     X = embeddings
 
-    # X = normalizer.fit_transform(X)
-
-    #X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=seed)
-    #X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=seed)
-    from sklearn.model_selection import KFold
-    kf = KFold(10, shuffle=True, random_state=None)
+    from sklearn.model_selection import StratifiedKFold
+    kf = StratifiedKFold(10, shuffle=True, random_state=None)
     accs = []
     for train_index, test_index in kf.split(X, Y):
 
