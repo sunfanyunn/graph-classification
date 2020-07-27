@@ -4,7 +4,7 @@ A collection of graph classiifcation methods.
 
 All methods are more or less modified to accept graph data from [https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets]() 
 
-Download data to `./data` and refer to `go.sh` under every directory for example usage.
+Download data to `./data` and refer to `go.sh` under every directory for sample usage.
 
 Methods
 * DGK: [Deep Graph Kernels](http://www.mit.edu/~pinary/kdd/YanVis15.pdf) [[source](http://www.mit.edu/~pinary/kdd/)]
