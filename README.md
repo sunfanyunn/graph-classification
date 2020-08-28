@@ -2,7 +2,7 @@
 
 A collection of graph classiifcation methods.
 
-All methods are more or less modified to accept graph data from [https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets]() 
+All methods are modified to accept graph data from [https://ls11-www.cs.tu-dortmund.de/staff/morris/graphkerneldatasets]() 
 
 Download data to `./data` and refer to `go.sh` under every directory for sample usage.
 
